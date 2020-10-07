@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!--CDN Para JS-->
+    <title>Cliente de Rest API Usuarios</title>
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper green">
+        </div>
+    </nav>
+    <div id="Ventas" style="text-align: center">
+        <div class="row">
+            <div class="col s6"> <!--Lista de los datos almacenados-->
+                <div class="row"> <!--Buscador-->
+                    <div class="input-field col s5">
+                        <i class="material-icons prefix">find_in_page</i>
+                        <input v-model="Busqueda" type="number">
+                        <label>Buscar Factura Nro.</label>
+                    </div>
+                    <div class="input-field col s3">
+                        <button v-on:click="buscarSearch()" class="btn">Buscar</button>
+                    </div>
+                </div>
+                <table style="text-align: center"> <!--Tabla con los datos de la BBDD-->
+                    <tr>
+                        <th>Id</th>
+                        <th>Producto</th>
+                        <th>Cliente</th>
+                        <th>iva</th>
+                        <th>Cantidad</th>
+                        <th>Subtotal</th>
+                        <th>Total</th>
+                        <th>Medio Pago</th>
+                        <th>Acciones</th>
+                    </tr>
+                    <tr v-for="v of lista_Ventas">
+                        <td>{{v.id_factura}}</td>
+                        <td>{{v.nombre_producto}}</td>
+                        <td>{{v.nombre_cliente}}</td>
+                        <td>$ {{v.iva}}</td>
+                        <td>{{v.cantidad}}</td>
+                        <td>$ {{v.subtotal}}</td>
+                        <td>$ {{v.total}}</td>
+                        <td>{{v.forma_pago}}</td>
+                        <td>
+                            <a v-on:click="editarVtas(v.id_factura,v.nombre_producto,v.nombre_cliente,v.iva,v.cantidad,v.subtotal,v.total,v.forma_pago)" class="btn-floating btn-small waves-effect waves-light blue"><i class="tiny material-icons">create</i></a>
+                            <a v-on:click="eliminarVtas(v.id_factura)" class="btn-floating btn-small waves-effect waves-light red"><i class="tiny material-icons">delete_forever</i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="row">
+                <div class="col s6"> <!--Formulario-->
+                    <div class="card-panel">    
+                        <div class="row"> 
+                            <div class="input-field col s6"> <!--Campo Producto-->
+                                <i class="material-icons prefix">phonelink</i>
+                                <input v-model="nombre_producto" type="text">
+                                <label>Producto</label>
+                            </div>
+
+                            <div class="input-field col s6"> <!--Campo Nombre Cliente-->
+                                <i class="material-icons prefix">person_add</i>
+                                <input v-model="nombre_cliente" type="text">
+                                <label for="">Nombre y Apellido del Cliente</label>
+                            </div>
+
+                            <div class="input-field col s6"> <!--Campo IVA-->
+                                
+                                <i class="material-icons prefix"><img src="../Practico_vue-api-db/ico/tax_icon_151058.ico"></i>
+                                <input v-model='iva' type="number">
+                                <label>IVA: {{caliva}}</label>
+                            </div>
+
+                            <div class="input-field col s6"><!--Campo Cantidad-->
+                                <i class="material-icons prefix">add_shopping_cart</i>
+                                <input v-model="cantidad" type="number">
+                                <label>Cantidad</label>
+                            </div>
+
+                            <div class="input-field col s6"><!--Campo Subtotal-->
+                                <i class="material-icons prefix">attach_money</i>
+                                <input v-model="subtotal" type="number">
+                                <label>SubTotal</label>
+                            </div>
+
+                            <div class="input-field col s6"><!--Campo Total-->
+                                <i class="material-icons prefix">monetization_on</i>
+                                <input v-model="total" type="number">
+                                <label>Total: {{caltotal}}</label>
+                            </div>
+
+                            <div class="input-field col s6"><!--Campo Medio de Pago-->
+                                <i class="material-icons prefix">credit_card</i>
+                                <!--<input v-model="forma_pago" type="text">-->
+                                <select v-model="forma_pago" class="browser-default">
+                                    <option value="" disabled selected>Medios de Pago</option>
+                                    <option value="Efectivo">Efectivo</option>
+                                    <option value="Débito">Débito</option>
+                                    <option value="Tarj.Naranja">Tarj.Naranja</option>
+                                    <option value="Tarj.Cto Visa">Tarj.Cto.Visa</option>
+                                </select>
+                                <!--<label>Medio de Pago</label>-->
+                            </div>                            
+                        </div>
+
+                        <div class="row"> 
+                            <div class="col s6"><!--Botón Guardar-->
+                                <button v-on:click="guardarSave()" class="btn">Guardar Datos</button>
+                            </div>
+                            
+                            <div class="col s6"><!--Botón Actualizar-->
+                                <button v-on:click="actualizarVtas()" class="btn orange">Actualizar Datos</button>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+            </div>           
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+</html>
