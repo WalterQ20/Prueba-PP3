@@ -17,47 +17,51 @@
     <div id="Ventas" style="text-align: center">
         <div class="row">
             <div class="col s6"> <!--Lista de los datos almacenados-->
-                <div class="row"> <!--Buscador-->
-                    <div class="input-field col s5">
-                        <i class="material-icons prefix">find_in_page</i>
-                        <input v-model="Busqueda" type="number">
-                        <label>Buscar Factura Nro.</label>
-                    </div>
-                    <div class="input-field col s3">
-                        <button v-on:click="buscarSearch()" class="btn">Buscar</button>
-                    </div>
-                </div>
-                <table style="text-align: center"> <!--Tabla con los datos de la BBDD-->
-                    <tr>
-                        <th>Id</th>
-                        <th>Producto</th>
-                        <th>Cliente</th>
-                        <th>iva</th>
-                        <th>Cantidad</th>
-                        <th>Subtotal</th>
-                        <th>Total</th>
-                        <th>Medio Pago</th>
-                        <th>Acciones</th>
-                    </tr>
-                    <tr v-for="v of lista_Ventas">
-                        <td>{{v.id_factura}}</td>
-                        <td>{{v.nombre_producto}}</td>
-                        <td>{{v.nombre_cliente}}</td>
-                        <td>$ {{v.iva}}</td>
-                        <td>{{v.cantidad}}</td>
-                        <td>$ {{v.subtotal}}</td>
-                        <td>$ {{v.total}}</td>
-                        <td>{{v.forma_pago}}</td>
-                        <td>
-                            <a v-on:click="editarVtas(v.id_factura,v.nombre_producto,v.nombre_cliente,v.iva,v.cantidad,v.subtotal,v.total,v.forma_pago)" class="btn-floating btn-small waves-effect waves-light blue"><i class="tiny material-icons">create</i></a>
-                            <a v-on:click="eliminarVtas(v.id_factura)" class="btn-floating btn-small waves-effect waves-light red"><i class="tiny material-icons">delete_forever</i></a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
+                    <div class="card-panel">
+                        <div class="row"> <!--Buscador-->
+                            <div class="input-field col s5">
+                                <i class="material-icons prefix">find_in_page</i>
+                                <input v-model="Busqueda" type="number">
+                                <label>Buscar Factura Nro.</label>
+                            </div>
+                            <div class="input-field col s3">
+                                <button v-on:click="buscarSearch()" class="btn">Buscar</button>
+                            </div>
+                        </div>
 
-            <div class="row">
-                <div class="col s6"> <!--Formulario-->
+                        <div class="row">
+                            <table style="text-align: center"> <!--Tabla con los datos de la BBDD-->
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Producto</th>
+                                    <th>Cliente</th>
+                                    <th>iva</th>
+                                    <th>Cantidad</th>
+                                    <th>Subtotal</th>
+                                    <th>Total</th>
+                                    <th>Medio Pago</th>
+                                    <th>Acciones</th>
+                                </tr>
+                                <tr v-for="v of lista_Ventas">
+                                    <td>{{v.id_factura}}</td>
+                                    <td>{{v.nombre_producto}}</td>
+                                    <td>{{v.nombre_cliente}}</td>
+                                    <td>$ {{v.iva}}</td>
+                                    <td>{{v.cantidad}}</td>
+                                    <td>$ {{v.subtotal}}</td>
+                                    <td>$ {{v.total}}</td>
+                                    <td>{{v.forma_pago}}</td>
+                                    <td>
+                                        <a v-on:click="editarVtas(v.id_factura,v.nombre_producto,v.nombre_cliente,v.iva,v.cantidad,v.subtotal,v.total,v.forma_pago)" class="btn-floating btn-small waves-effect waves-light blue"><i class="tiny material-icons">create</i></a>
+                                        <a v-on:click="eliminarVtas(v.id_factura)" class="btn-floating btn-small waves-effect waves-light red"><i class="tiny material-icons">delete_forever</i></a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div> 
+                    </div>
+            </div>
+            
+            <div class="col s6"> <!--Formulario-->
                     <div class="card-panel">    
                         <div class="row"> 
                             <div class="input-field col s6"> <!--Campo Producto-->
@@ -120,10 +124,8 @@
                                 <button v-on:click="actualizarVtas()" class="btn orange">Actualizar Datos</button>
                             </div>
                         </div>
-                </div>
-            </div>
-
-            </div>           
+                    </div>
+            </div>          
         </div>
     </div>
 
